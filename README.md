@@ -1,5 +1,7 @@
 # Tagalong
 
+**Live demo:** https://ankey02.github.io/tagalong/
+
 A group trip planner built as a multi-step form with Next.js, Tailwind CSS, Zustand and Framer Motion. Friends open the same link, fill in the plan together, vote on where to stay and what to do, and see each other's changes as they happen. It is a frontend-only project.
 
 ## What it does
