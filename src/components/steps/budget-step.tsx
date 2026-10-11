@@ -5,7 +5,7 @@ import { useEffect, type CSSProperties } from "react";
 
 import { Field, GroupError } from "@/components/field";
 import { CarIcon, CheckIcon, PlaneIcon, TrainIcon } from "@/components/icons";
-import { BUDGET_MAX, BUDGET_MIN, BUDGET_SPLIT, TRANSPORTS } from "@/lib/data";
+import { BUDGET_SPLIT, TRANSPORTS } from "@/lib/data";
 import type { TransportId } from "@/lib/types";
 import { cn, rupees } from "@/lib/utils";
 import { useTrip, useTripStore } from "@/store/trip-store";
@@ -26,7 +26,7 @@ function CountingRupees({ value }: { value: number }) {
 export function BudgetStep() {
   const trip = useTrip();
   const setField = useTripStore((s) => s.setField);
-  const fill = ((trip.budget - BUDGET_MIN) / (BUDGET_MAX - BUDGET_MIN)) * 100;
+  const fill = ((trip.budget - trip.budgetMin) / (trip.budgetMax - trip.budgetMin)) * 100;
   const nights = Math.max(1, trip.nights);
 
   return (
@@ -48,17 +48,17 @@ export function BudgetStep() {
             id="budget"
             type="range"
             className="range mt-3"
-            min={BUDGET_MIN}
-            max={BUDGET_MAX}
-            step={500}
+            min={trip.budgetMin}
+            max={trip.budgetMax}
+            step={trip.budgetStep}
             value={trip.budget}
             onChange={(e) => setField("budget", Number(e.target.value))}
             style={{ "--fill": `${fill}%` } as CSSProperties}
             aria-valuetext={rupees(trip.budget)}
           />
           <div className="flex justify-between text-xs font-medium text-muted">
-            <span>{rupees(BUDGET_MIN)}</span>
-            <span>{rupees(BUDGET_MAX)}</span>
+            <span>{rupees(trip.budgetMin)}</span>
+            <span>{rupees(trip.budgetMax)}</span>
           </div>
         </div>
       </Field>

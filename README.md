@@ -5,6 +5,7 @@ A group trip planner built as a multi-step form with Next.js, Tailwind CSS, Zust
 ## What it does
 
 - **Five-step form**: where and when, budget and travel, where to stay, things to do, and a final itinerary. Each step is validated before you can move on.
+- **Eighteen destinations in three regions** (India, Asia, Europe), each with its own illustration and activity ideas. The budget range and stay prices adjust to the region, and any other place can be typed in.
 - **Live collaboration**: every window on the same trip link edits one shared plan. You see who is here, which step they are on, and which field they are typing in.
 - **Voting**: one vote each on the stay, and any number of votes on activities. The list re-orders itself as votes come in.
 - **Live boarding pass**: a ticket beside the form fills in as the group decides, and gets a "Confirmed" stamp when anyone confirms the trip.
@@ -68,5 +69,5 @@ src/components/ui/          button, input, label, avatar
 ## Limits
 
 - Live sync is between tabs and windows of one browser. There is no server.
-- Destinations, activity ideas and stay prices are sample data, not live prices.
+- Destinations, activity ideas, budget ranges and stay prices are sample data for planning, not live prices.
 - There are no accounts. Anyone with the trip link in the same browser can edit the plan.

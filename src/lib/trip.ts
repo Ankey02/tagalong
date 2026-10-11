@@ -1,4 +1,4 @@
-import { DESTINATIONS, STAYS } from "./data";
+import { DESTINATIONS, GROUPS, STAYS } from "./data";
 import type { Activity, Entries, StayId, Trip, TransportId, Voter } from "./types";
 import { addDays, nightsBetween } from "./utils";
 
@@ -44,9 +44,16 @@ export function buildTrip(entries: Entries): Trip {
   const start = read(entries, "start", "");
   const end = read(entries, "end", "");
 
+  // The budget range follows the destination. A saved budget from a cheaper
+  // (or dearer) destination is pulled into the new range.
+  const group = GROUPS.find((g) => g.id === destination?.group) ?? GROUPS[0];
+  const savedBudget = read<number | null>(entries, "budget", null);
+  const budget = Math.min(group.budget.max, Math.max(group.budget.min, savedBudget ?? group.budget.start));
+
   return {
     name: read(entries, "name", ""),
     destinationId,
+    group: group.id,
     customDestination,
     destinationName,
     destinationCode,
@@ -54,7 +61,11 @@ export function buildTrip(entries: Entries): Trip {
     end,
     nights: Math.max(0, nightsBetween(start, end)),
     travellers: read(entries, "travellers", 4),
-    budget: read(entries, "budget", 15000),
+    budget,
+    budgetMin: group.budget.min,
+    budgetMax: group.budget.max,
+    budgetStep: group.budget.step,
+    priceFactor: group.priceFactor,
     transport: read<TransportId | null>(entries, "transport", null),
     stayVotes,
     leadingStay,

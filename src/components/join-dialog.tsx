@@ -65,7 +65,7 @@ export function JoinDialog() {
 
         <fieldset className="mt-5">
           <legend className="text-sm font-semibold">Your colour</legend>
-          <div className="mt-2 flex gap-2">
+          <div className="mt-2 grid w-fit grid-cols-6 gap-2">
             {PERSON_COLORS.map((option) => {
               const selected = (color ?? firstFree) === option;
               return (

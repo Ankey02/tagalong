@@ -12,10 +12,17 @@ export type Entries = Record<string, Entry>;
 
 export type TransportId = "flight" | "train" | "road";
 export type StayId = "hostel" | "homestay" | "hotel" | "resort";
-export type Scene = "beach" | "mountain" | "fort" | "boat" | "river" | "pass";
+export type Scene =
+  | "beach" | "mountain" | "fort" | "boat" | "river" | "pass"
+  | "temple" | "city" | "huts" | "pagoda"
+  | "tower" | "arches" | "domes" | "clock" | "aurora";
+
+/** Which tab a destination is listed under. */
+export type GroupId = "india" | "asia" | "europe";
 
 export type Destination = {
   id: string;
+  group: GroupId;
   name: string;
   code: string;
   region: string;
@@ -32,6 +39,7 @@ export type Activity = { id: string; label: string; by: string; voters: Voter[] 
 export type Trip = {
   name: string;
   destinationId: string | null;
+  group: GroupId;
   customDestination: string;
   destinationName: string;
   destinationCode: string;
@@ -40,6 +48,11 @@ export type Trip = {
   nights: number;
   travellers: number;
   budget: number;
+  /** The slider range and stay prices depend on how far away the trip is. */
+  budgetMin: number;
+  budgetMax: number;
+  budgetStep: number;
+  priceFactor: number;
   transport: TransportId | null;
   stayVotes: Record<StayId, Voter[]>;
   leadingStay: StayId | null;

@@ -30,7 +30,8 @@ export function StayStep() {
           const mine = voters.some((v) => v.id === me?.id);
           const leading = trip.leadingStay === stay.id;
           const share = totalVotes ? (voters.length / totalVotes) * 100 : 0;
-          const over = stay.perNight - perNight;
+          const price = stay.perNight * trip.priceFactor;
+          const over = price - perNight;
           return (
             <motion.li key={stay.id}>
               <motion.button
@@ -79,7 +80,7 @@ export function StayStep() {
                     </span>
                     <span className="block text-sm text-muted">{stay.blurb}</span>
                     <span className="mt-1 block text-sm">
-                      <span className="font-semibold tabular-nums">{rupees(stay.perNight)}</span>
+                      <span className="font-semibold tabular-nums">{rupees(price)}</span>
                       <span className="text-muted"> a night each. </span>
                       <span className={cn("font-semibold", over > 0 ? "text-flare-deep" : "text-sea")}>
                         {over > 0 ? `${rupees(over)} over budget` : "Fits the budget"}
