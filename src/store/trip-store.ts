@@ -46,7 +46,7 @@ type State = {
   toasts: Toast[];
 
   init: () => void;
-  join: (name: string, color: string) => void;
+  join: (name: string, color: string, face?: string) => void;
   setField: (key: string, value: unknown) => void;
   setFocus: (key: string | null) => void;
   voteStay: (stay: StayId) => void;
@@ -261,8 +261,8 @@ export const useTripStore = create<State>((set, get) => {
       });
     },
 
-    join: (name, color) => {
-      const me: Person = { id: randomId(10), name: name.trim() || get().suggestedName, color };
+    join: (name, color, face) => {
+      const me: Person = { id: randomId(10), name: name.trim() || get().suggestedName, color, face };
       storageSet("session", "tagalong:me", JSON.stringify(me));
       set({ me });
       const from = presence();
@@ -293,7 +293,7 @@ export const useTripStore = create<State>((set, get) => {
       if (!me) return;
       const key = `stay:${me.id}`;
       const current = entries[key]?.v as { stay: StayId } | null | undefined;
-      commit({ [key]: current?.stay === stay ? null : { stay, name: me.name, color: me.color } });
+      commit({ [key]: current?.stay === stay ? null : { stay, name: me.name, color: me.color, face: me.face } });
       set((s) => ({ errors: { ...s.errors, stay: "" } }));
     },
 
@@ -301,7 +301,7 @@ export const useTripStore = create<State>((set, get) => {
       const { me, entries } = get();
       if (!me) return;
       const key = `vote:${activityId}:${me.id}`;
-      commit({ [key]: entries[key]?.v ? null : { name: me.name, color: me.color } });
+      commit({ [key]: entries[key]?.v ? null : { name: me.name, color: me.color, face: me.face } });
       set((s) => ({ errors: { ...s.errors, activities: "" } }));
     },
 
@@ -313,7 +313,7 @@ export const useTripStore = create<State>((set, get) => {
       // Whoever adds an idea also votes for it.
       commit({
         [`act:${id}`]: { label: text, by: me.name },
-        [`vote:${id}:${me.id}`]: { name: me.name, color: me.color },
+        [`vote:${id}:${me.id}`]: { name: me.name, color: me.color, face: me.face },
       });
       set((s) => ({ errors: { ...s.errors, activities: "" } }));
     },

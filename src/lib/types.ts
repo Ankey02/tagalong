@@ -1,4 +1,5 @@
-export type Person = { id: string; name: string; color: string };
+/** `face` is an optional emoji shown on the avatar in place of the initials. */
+export type Person = { id: string; name: string; color: string; face?: string };
 
 /** A person who has the trip open right now, and what they are doing. */
 export type Presence = Person & { step: number; focus: string | null; seen: number };
@@ -31,7 +32,7 @@ export type Destination = {
   activities: string[];
 };
 
-export type Voter = { id: string; name: string; color: string };
+export type Voter = { id: string; name: string; color: string; face?: string };
 
 export type Activity = { id: string; label: string; by: string; voters: Voter[] };
 

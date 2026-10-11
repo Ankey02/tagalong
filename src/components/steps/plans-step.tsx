@@ -115,7 +115,7 @@ export function PlansStep() {
                     <span className="mt-1 flex items-center gap-2 text-xs text-muted">
                       <span className="flex -space-x-1">
                         {activity.voters.map((voter) => (
-                          <Avatar key={voter.id} name={voter.name} color={voter.color} size="xs" />
+                          <Avatar key={voter.id} name={voter.name} color={voter.color} face={voter.face} size="xs" />
                         ))}
                       </span>
                       Added by {activity.by}

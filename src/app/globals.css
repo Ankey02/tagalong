@@ -101,6 +101,16 @@ body {
   border-radius: 9999px;
 }
 
+/* The sliding rows of colours and faces: scroll sideways, with no scrollbar showing. */
+.slide-row {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.slide-row::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cloud,
   .star {

@@ -132,7 +132,7 @@ export function BoardingPass({ trip, crew, layout = "side" }: BoardingPassProps)
                   exit={{ scale: 0 }}
                   transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
-                  <Avatar name={person.name} color={person.color} size="sm" />
+                  <Avatar name={person.name} color={person.color} face={person.face} size="sm" />
                 </motion.span>
               ))}
             </AnimatePresence>

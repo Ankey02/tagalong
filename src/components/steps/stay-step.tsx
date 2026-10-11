@@ -99,7 +99,7 @@ export function StayStep() {
                             exit={{ scale: 0 }}
                             transition={{ type: "spring", stiffness: 400, damping: 18 }}
                           >
-                            <Avatar name={voter.name} color={voter.color} size="sm" />
+                            <Avatar name={voter.name} color={voter.color} face={voter.face} size="sm" />
                           </motion.span>
                         ))}
                       </AnimatePresence>

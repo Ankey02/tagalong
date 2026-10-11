@@ -4,24 +4,29 @@ import { motion } from "framer-motion";
 import { useState, type FormEvent } from "react";
 
 import { ArrowRightIcon, CheckIcon, Logo } from "@/components/icons";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PERSON_COLORS } from "@/lib/data";
+import { SlideRow } from "@/components/ui/slide-row";
+import { PERSON_COLORS, PERSON_FACES } from "@/lib/data";
+import { cn } from "@/lib/utils";
 import { usePeers, useTripStore } from "@/store/trip-store";
 
-/** Shown once per window: pick the name and colour your friends will see. */
+/** Shown once per window: pick the name, colour and face your friends will see. */
 export function JoinDialog() {
   const join = useTripStore((s) => s.join);
   const suggested = useTripStore((s) => s.suggestedName);
   const taken = usePeers().map((p) => p.color);
   const firstFree = PERSON_COLORS.find((c) => !taken.includes(c)) ?? PERSON_COLORS[0];
   const [name, setName] = useState("");
-  const [color, setColor] = useState<string | null>(null);
+  const [pickedColor, setPickedColor] = useState<string | null>(null);
+  const [face, setFace] = useState("");
+  const color = pickedColor ?? firstFree;
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
-    join(name || suggested, color ?? firstFree);
+    join(name || suggested, color, face || undefined);
   };
 
   return (
@@ -42,7 +47,13 @@ export function JoinDialog() {
         transition={{ type: "spring", stiffness: 240, damping: 22 }}
         className="w-full max-w-md rounded-3xl bg-white p-7 text-ink shadow-paper sm:p-8"
       >
-        <Logo size={40} />
+        <div className="flex items-start justify-between gap-4">
+          <Logo size={40} />
+          {/* A live preview of the avatar your friends will see. */}
+          <motion.div key={color + face} initial={{ scale: 0.7 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 18 }}>
+            <Avatar name={name || suggested} color={color} face={face || undefined} className={cn("h-14 w-14", face ? "text-3xl" : "text-lg")} />
+          </motion.div>
+        </div>
         <h2 id="join-title" className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-tight">
           Plan a trip together
         </h2>
@@ -63,27 +74,70 @@ export function JoinDialog() {
           />
         </div>
 
-        <fieldset className="mt-5">
-          <legend className="text-sm font-semibold">Your colour</legend>
-          <div className="mt-2 grid w-fit grid-cols-6 gap-2">
-            {PERSON_COLORS.map((option) => {
-              const selected = (color ?? firstFree) === option;
-              return (
+        <div className="mt-5">
+          <div className="text-sm font-semibold">Your colour</div>
+          <div className="mt-1">
+            <SlideRow label="Your colour">
+              {PERSON_COLORS.map((option) => {
+                const selected = color === option;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    aria-label={`Colour ${option}`}
+                    aria-pressed={selected}
+                    onClick={() => setPickedColor(option)}
+                    className={cn(
+                      "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full text-white transition-transform hover:scale-110",
+                      "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+                      selected && "ring-2 ring-ink ring-offset-2",
+                    )}
+                    style={{ backgroundColor: option }}
+                  >
+                    {selected && <CheckIcon size={18} />}
+                  </button>
+                );
+              })}
+            </SlideRow>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <div className="text-sm font-semibold">Your face</div>
+          <div className="mt-1">
+            <SlideRow label="Your face">
+              <button
+                type="button"
+                aria-label="Use my initials"
+                aria-pressed={face === ""}
+                onClick={() => setFace("")}
+                className={cn(
+                  "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-mist text-sm font-bold text-ink transition-transform hover:scale-110",
+                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+                  face === "" && "ring-2 ring-ink ring-offset-2",
+                )}
+              >
+                Aa
+              </button>
+              {PERSON_FACES.map((option) => (
                 <button
                   key={option}
                   type="button"
-                  aria-label={`Colour ${option}`}
-                  aria-pressed={selected}
-                  onClick={() => setColor(option)}
-                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full text-white transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-                  style={{ backgroundColor: option }}
+                  aria-label={`Face ${option}`}
+                  aria-pressed={face === option}
+                  onClick={() => setFace(option)}
+                  className={cn(
+                    "flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-mist text-2xl leading-none transition-transform hover:scale-110",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink",
+                    face === option && "ring-2 ring-ink ring-offset-2",
+                  )}
                 >
-                  {selected && <CheckIcon size={18} />}
+                  {option}
                 </button>
-              );
-            })}
+              ))}
+            </SlideRow>
           </div>
-        </fieldset>
+        </div>
 
         <Button type="submit" size="lg" className="mt-7 w-full">
           Start planning

@@ -131,4 +131,10 @@ export const PERSON_COLORS = [
   "#2e7d32", "#b45309", "#b71c1c", "#8e24aa", "#0e7490", "#475569",
 ];
 
+/** Faces for the avatar. Picking none shows the person's initials. */
+export const PERSON_FACES = [
+  "😀", "😄", "😎", "🤩", "🥳", "😇", "🤠", "🤓", "😜", "🥰",
+  "🤗", "😴", "🧐", "😌", "🤪", "😺", "🐼", "🦊", "🐯", "🐵",
+];
+
 export const NAME_IDEAS = ["Aarav", "Diya", "Kabir", "Meera", "Rohan", "Sana", "Vikram", "Zoya"];

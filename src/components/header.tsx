@@ -63,7 +63,7 @@ export function Header({ onDark }: { onDark: boolean }) {
           <AnimatePresence>
             {me && (
               <motion.span key={me.id} initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
-                <Avatar name={me.name} label={`${me.name} (you)`} color={me.color} />
+                <Avatar name={me.name} label={`${me.name} (you)`} color={me.color} face={me.face} />
               </motion.span>
             )}
             {shown.map((peer) => (
@@ -74,7 +74,7 @@ export function Header({ onDark }: { onDark: boolean }) {
                 exit={{ scale: 0 }}
                 transition={{ type: "spring", stiffness: 380, damping: 20 }}
               >
-                <Avatar name={peer.name} color={peer.color} />
+                <Avatar name={peer.name} color={peer.color} face={peer.face} />
               </motion.span>
             ))}
           </AnimatePresence>

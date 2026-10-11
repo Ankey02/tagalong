@@ -22,15 +22,15 @@ export function buildTrip(entries: Entries): Trip {
   for (const [key, entry] of Object.entries(entries)) {
     if (entry.v === null || entry.v === undefined) continue;
     if (key.startsWith("stay:")) {
-      const vote = entry.v as { stay: StayId; name: string; color: string };
-      if (stayVotes[vote.stay]) stayVotes[vote.stay].push({ id: key.slice(5), name: vote.name, color: vote.color });
+      const vote = entry.v as { stay: StayId; name: string; color: string; face?: string };
+      if (stayVotes[vote.stay]) stayVotes[vote.stay].push({ id: key.slice(5), name: vote.name, color: vote.color, face: vote.face });
     } else if (key.startsWith("act:")) {
       const value = entry.v as { label: string; by: string };
       activities[key.slice(4)] = { id: key.slice(4), label: value.label, by: value.by, voters: [] };
     } else if (key.startsWith("vote:")) {
       const [, activityId, userId] = key.split(":");
-      const value = entry.v as { name: string; color: string };
-      votes.push({ activityId, voter: { id: userId, name: value.name, color: value.color } });
+      const value = entry.v as { name: string; color: string; face?: string };
+      votes.push({ activityId, voter: { id: userId, name: value.name, color: value.color, face: value.face } });
     }
   }
   for (const { activityId, voter } of votes) activities[activityId]?.voters.push(voter);
